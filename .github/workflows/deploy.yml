@@ -31,7 +31,9 @@ jobs:
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_KEY }}
         source: "build/*"
-        target: "/home/ubuntu/SchoolFrontend/"
+        target: "/var/www/html"
+        # source: "build/*"
+        # target: "/home/ubuntu/SchoolFrontend/"
 
 # name: Deploy React App to EC2
 
