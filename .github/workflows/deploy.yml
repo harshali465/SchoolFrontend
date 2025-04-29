@@ -1,46 +1,9 @@
-name: Deploy React App to EC2
-
-on:
-  push:
-    branches:
-      - main  # change if your deployment branch is different
-
-jobs:
-  deploy:
-    runs-on: ubuntu-latest
-
-    steps:
-    - name: Checkout Code
-      uses: actions/checkout@v3
-
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: 18
-
-    - name: Install Dependencies
-      run: npm install --legacy-peer-deps
-
-    - name: Build React App
-      run: npm run build
-
-    - name: Copy Files to EC2
-      uses: appleboy/scp-action@v0.1.4
-      with:
-        host: ${{ secrets.EC2_HOST }}
-        username: ${{ secrets.EC2_USER }}
-        key: ${{ secrets.EC2_KEY }}
-        source: "build/*"
-        target: "/var/www/html"
-        # source: "build/*"
-        # target: "/home/ubuntu/SchoolFrontend/"
-
 # name: Deploy React App to EC2
 
 # on:
 #   push:
 #     branches:
-#       - main
+#       - main  # change if your deployment branch is different
 
 # jobs:
 #   deploy:
@@ -61,7 +24,7 @@ jobs:
 #     - name: Build React App
 #       run: npm run build
 
-#     - name: Copy Build Files to EC2
+#     - name: Copy Files to EC2
 #       uses: appleboy/scp-action@v0.1.4
 #       with:
 #         host: ${{ secrets.EC2_HOST }}
@@ -69,13 +32,96 @@ jobs:
 #         key: ${{ secrets.EC2_KEY }}
 #         source: "build/*"
 #         target: "/var/www/html"
+#         # source: "build/*"
+#         # target: "/home/ubuntu/SchoolFrontend/"
 
-#     - name: Restart Nginx on EC2
-#       uses: appleboy/ssh-action@v0.1.7
-#       with:
-#         host: ${{ secrets.EC2_HOST }}
-#         username: ${{ secrets.EC2_USER }}
-#         key: ${{ secrets.EC2_KEY }}
-#         script: |
-#           sudo systemctl restart nginx
-#           echo "Nginx restarted!"
+# # name: Deploy React App to EC2
+
+# # on:
+# #   push:
+# #     branches:
+# #       - main
+
+# # jobs:
+# #   deploy:
+# #     runs-on: ubuntu-latest
+
+# #     steps:
+# #     - name: Checkout Code
+# #       uses: actions/checkout@v3
+
+# #     - name: Set up Node.js
+# #       uses: actions/setup-node@v4
+# #       with:
+# #         node-version: 18
+
+# #     - name: Install Dependencies
+# #       run: npm install --legacy-peer-deps
+
+# #     - name: Build React App
+# #       run: npm run build
+
+# #     - name: Copy Build Files to EC2
+# #       uses: appleboy/scp-action@v0.1.4
+# #       with:
+# #         host: ${{ secrets.EC2_HOST }}
+# #         username: ${{ secrets.EC2_USER }}
+# #         key: ${{ secrets.EC2_KEY }}
+# #         source: "build/*"
+# #         target: "/var/www/html"
+
+# #     - name: Restart Nginx on EC2
+# #       uses: appleboy/ssh-action@v0.1.7
+# #       with:
+# #         host: ${{ secrets.EC2_HOST }}
+# #         username: ${{ secrets.EC2_USER }}
+# #         key: ${{ secrets.EC2_KEY }}
+# #         script: |
+# #           sudo systemctl restart nginx
+# #           echo "Nginx restarted!"
+
+name: Deploy React App to EC2
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18
+
+    - name: Install Dependencies
+      run: npm install --legacy-peer-deps
+
+    - name: Build React App
+      run: npm run build
+
+    - name: Upload Build Files to EC2
+      uses: appleboy/scp-action@v0.1.4
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_KEY }}
+        source: "build/*"
+        target: "/home/ubuntu/temp_build"
+
+    - name: Move Build to /var/www/html and Restart Nginx
+      uses: appleboy/ssh-action@v0.1.6
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USER }}
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+          sudo rm -rf /var/www/html/*
+          sudo cp -r /home/ubuntu/temp_build/* /var/www/html/
+          sudo systemctl restart nginx
