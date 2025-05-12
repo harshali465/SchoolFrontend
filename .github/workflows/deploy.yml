@@ -16,11 +16,11 @@ jobs:
         with:
           node-version: 18
 
-      - name: Install Dependencies
-        run: npm install --legacy-peer-deps
+      # - name: Install Dependencies
+      #   run: npm install --legacy-peer-deps
 
-      - name: Build React App
-        run: npm run build
+      # - name: Build React App
+      #   run: npm run build
 
       - name: Upload Build Files to EC2
         uses: appleboy/scp-action@v0.1.4
@@ -38,7 +38,7 @@ jobs:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
-          
+
           script: |
             sudo rm -f /var/www/html/index.nginx-debian.html
             sudo rm -rf /var/www/html/*
