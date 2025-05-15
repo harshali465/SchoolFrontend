@@ -5,13 +5,13 @@ on:
     branches:
       - main
 
+env:
+    DEPLOY_TARGET_PATH: /var/www/html
+    BASE_TARGET_PATH: /home/ubuntu/SchoolFrontendt
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
-  env:
-    DEPLOY_TARGET_PATH: /var/www/html
-    BASE_TARGET_PATH: /home/ubuntu/SchoolFrontendt
 
     steps:
       - name: Deploy React App using reusable action
