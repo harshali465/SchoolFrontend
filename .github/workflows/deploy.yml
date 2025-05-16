@@ -10,20 +10,24 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Deploy React App using reusable action
-        uses: harshali465/my-setup-action@v1
-
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
         with:
-        
           node-version: 18
+      # - name: Deploy React App using reusable action
+      #   uses: harshali465/my-setup-action@v1
 
-      # - name: Upload Build Files to EC2 and Move Build to target path
-      #   uses: harshali465/my-custom-actions/deploy-frontend@v2
       #   with:
-      #     host: ${{ secrets.EC2_HOST }}
-      #     username: ${{ secrets.EC2_USER }}
-      #     key: ${{ secrets.EC2_KEY }}
-      #     target: ${{ vars.BASE_TARGET_PATH }}
+        
+      #     node-version: 18
+
+      - name: Upload Build Files to EC2 and Move Build to target path
+        uses: harshali465/my-custom-actions/deploy-frontend@v2
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          target: ${{ vars.BASE_TARGET_PATH }}
 
       # - name: Upload Build Files to EC2
       #   uses: appleboy/scp-action@v0.1.4
