@@ -5,10 +5,6 @@ on:
     branches:
       - main
 
-env:
-    DEPLOY_TARGET_PATH: /var/www/html
-    BASE_TARGET_PATH: /home/ubuntu/SchoolFrontendt
-
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -21,36 +17,38 @@ jobs:
         
           node-version: 18
 
-      # - name: Install Dependencies
-      #   run: npm install --legacy-peer-deps
-
-      # - name: Build React App
-      #   run: npm run build
-
-      - name: Upload Build Files to EC2
-        uses: appleboy/scp-action@v0.1.4
-        with:
-
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USER }}
-          key: ${{ secrets.EC2_KEY }}
-          source: "build"
-          target: ${{ env.BASE_TARGET_PATH }}
-
-      - name: Move Build to /var/www/html and Restart Nginx
-        uses: appleboy/ssh-action@v0.1.6
+      - name: Upload Build Files to EC2 and Move Build to target path
+        uses: harshali465/my-custom-actions/deploy-frontend@v2
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
+          target: ${{ vars.BASE_TARGET_PATH }}
 
-          script: |
-            sudo rm -f ${{ env.DEPLOY_TARGET_PATH }}/index.nginx-debian.html
-            sudo rm -rf ${{ env.DEPLOY_TARGET_PATH }}/*
-            sudo cp -r ${{ env.BASE_TARGET_PATH }}/build/* ${{ env.DEPLOY_TARGET_PATH }}/
-            sudo chown -R www-data:www-data ${{ env.DEPLOY_TARGET_PATH }}
-            sudo chmod -R 755 ${{ env.DEPLOY_TARGET_PATH }}
-            sudo systemctl restart nginx
+      # - name: Upload Build Files to EC2
+      #   uses: appleboy/scp-action@v0.1.4
+      #   with:
+
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.EC2_USER }}
+      #     key: ${{ secrets.EC2_KEY }}
+      #     source: "build"
+      #     target: ${{ vars.BASE_TARGET_PATH }}
+
+      # - name: Move Build to /var/www/html and Restart Nginx
+      #   uses: appleboy/ssh-action@v0.1.6
+      #   with:
+      #     host: ${{ secrets.EC2_HOST }}
+      #     username: ${{ secrets.EC2_USER }}
+      #     key: ${{ secrets.EC2_KEY }}
+
+      #     script: |
+      #       sudo rm -f ${{ vars.DEPLOY_TARGET_PATH }}/index.nginx-debian.html
+      #       sudo rm -rf ${{ vars.DEPLOY_TARGET_PATH }}/*
+      #       sudo cp -r ${{ vars.BASE_TARGET_PATH }}/build/* ${{ vars.DEPLOY_TARGET_PATH }}/
+      #       sudo chown -R www-data:www-data ${{ vars.DEPLOY_TARGET_PATH }}
+      #       sudo chmod -R 755 ${{ vars.DEPLOY_TARGET_PATH }}
+      #       sudo systemctl restart nginx
 
 # steps:
 #     - name: Checkout Code
