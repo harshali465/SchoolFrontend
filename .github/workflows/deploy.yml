@@ -11,7 +11,7 @@ jobs:
 
     steps:
       - name: Deploy React App using reusable action
-        uses: harshali465/my-setup-action@v1
+        uses: harshali465/my-setup-action@v2
 
         with:
         
