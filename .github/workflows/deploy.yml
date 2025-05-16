@@ -18,7 +18,7 @@ jobs:
           node-version: 18
 
       - name: Upload Build Files to EC2 and Move Build to target path
-        uses: harshali465/my-custom-actions/deploy-frontend@v1
+        uses: harshali465/my-custom-actions/deploy-frontend@v2
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
