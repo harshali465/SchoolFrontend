@@ -24,6 +24,7 @@ jobs:
       - name: Upload Build Files to EC2 and Move Build to target path
         uses: harshali465/deploy-frontend@v1
         with:
+        
           host: ${{ secrets.EC2_HOST }}
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_KEY }}
