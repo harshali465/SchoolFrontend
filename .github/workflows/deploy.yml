@@ -30,6 +30,7 @@ jobs:
           username: ${{ secrets.FRONTEND_USER }}
           key: ${{ secrets.FRONTEND_KEY }}
           target: ${{ vars.BASE_TARGET_PATH }}
+          deploy-path: ${{ vars.DEPLOY_TARGET_PATH }} 
 
       # - name: Upload Build Files to EC2
       #   uses: appleboy/scp-action@v0.1.4
