@@ -24,9 +24,10 @@ jobs:
           node-version: 18
 
       - name: Upload Build Files to EC2 and Move Build to target path
+      
         uses: harshali465/deploy-frontend@v1       
         with: 
-                     
+
           host: ${{ secrets.FRONTEND_HOST }}
           username: ${{ secrets.FRONTEND_USER }}
           key: ${{ secrets.FRONTEND_KEY }}
