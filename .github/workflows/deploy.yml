@@ -30,7 +30,8 @@ jobs:
 
           host: ${{ secrets.FRONTEND_HOST }}
           username: ${{ secrets.FRONTEND_USER }}
-          #key: ${{ secrets.FRONTEND_KEY }}                  
+          #key: ${{ secrets.FRONTEND_KEY }}  
+                          
           password: ${{ secrets.FRONTEND_PASS}}
           target: ${{ vars.BASE_TARGET_PATH }}
           deploy-path: ${{ vars.DEPLOY_TARGET_PATH }} 
