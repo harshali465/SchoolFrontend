@@ -27,7 +27,6 @@ jobs:
 
         uses: harshali465/deploy-frontend@v1       
         with: 
-
           host: ${{ secrets.FRONTEND_HOST }}
           username: ${{ secrets.FRONTEND_USER }}
           #key: ${{ secrets.FRONTEND_KEY }}                                    
